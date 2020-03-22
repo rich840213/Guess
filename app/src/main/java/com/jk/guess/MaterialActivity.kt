@@ -1,5 +1,6 @@
 package com.jk.guess
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,21 +23,29 @@ class MaterialActivity : AppCompatActivity() {
             /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()*/
             AlertDialog.Builder(this)
-                .setTitle("Replay game")
-                .setMessage("Are you sure?")
+                .setTitle(getString(R.string.replay_game))
+                .setMessage(getString(R.string.are_you_sure))
                 .setPositiveButton(getString(R.string.ok)) { dialog, which ->
                     secretNumber.reset()
                     counter.text = secretNumber.count.toString()
                     ed_number.setText("")
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show()
         }
 
         counter.text = secretNumber.count.toString()
         Log.d(TAG, "onCreate: ${secretNumber.secret}")
 
+        val count = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getInt("REC_COUNTER", -1)
+        val nick = getSharedPreferences("guess", Context.MODE_PRIVATE)
+            .getString("REC_NICKNAME", null)
+        Log.d(TAG, "data: $nick/$count")
+
         button_ok.setOnClickListener {
+            if (ed_number.text.isEmpty()) return@setOnClickListener
+
             val n = ed_number.text.toString().toInt()
             val diff = secretNumber.validate(n)
             var message = getString(R.string.yes_you_got_it)
