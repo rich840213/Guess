@@ -1,6 +1,8 @@
 package com.jk.guess
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,12 @@ class RecordActivity : AppCompatActivity() {
                     .putInt("REC_COUNTER", count)
                     .putString("REC_NICKNAME", nick)
                     .apply()
+
+                val intent = Intent()
+                intent.putExtra("REC_NICKNAME", nick)
+
+                setResult(Activity.RESULT_OK, intent)
+                finish()
             } else {
                 AlertDialog.Builder(this)
                     .setTitle(getString(R.string.dialog_title))
